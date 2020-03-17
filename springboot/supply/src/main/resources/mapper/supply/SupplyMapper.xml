@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.supply.mapper.SupplyMapper">
+    <select id="getSupplyList" resultType="com.demo.supply.entity.Supply">
+        select supply_number, supply_name, release_time from supply where 1 = 1
+        <if test="params.supplyNumber !=null and params.supplyNumber.trim() != ''">
+            and supply_number = #{params.supplyNumber}
+        </if>
+        <if test="params.supplyName !=null and params.supplyName.trim() != ''">
+            and supply_name = #{params.supplyName}
+        </if>
+        <if test="params.releaseTime !=null and params.releaseTime.trim() != ''">
+            and release_time = to_date(#{params.releaseTime},'yyyy-MM-dd')
+        </if>
+        <if test="params.id !=null and params.id.trim() != ''">
+            and id = #{params.id}
+        </if>
+    </select>
+    <select id="findAllList" resultType="com.demo.supply.entity.Supply">
+        select supply_number, supply_name, release_time from supply where 1 = 1
+        <if test="params.supplyNumber !=null and params.supplyNumber.trim() != ''">
+            and supply_number like concat(concat('%',#{params.supplyNumber}),'%')
+        </if>
+        <if test="params.supplyName !=null and params.supplyName.trim() != ''">
+            and supply_name like concat(concat('%',#{params.supplyName}),'%')
+        </if>
+        <if test="params.searchSupplyTimeFrom !=null and params.searchSupplyTimeFrom.trim() != ''">
+                    and release_time &gt;= to_date(#{params.searchSupplyTimeFrom},'yyyy-MM-dd')
+        </if>
+        <if test="params.searchSupplyTimeTo !=null and params.searchSupplyTimeTo.trim() != ''">
+            and release_time &lt;= to_date(#{params.searchSupplyTimeTo},'yyyy-MM-dd')
+        </if>
+    </select>
+    <select id="findByNumber" resultType="com.demo.supply.entity.Supply">
+        select distinct supply_number from supply where 1 = 1
+        <if test="params.supplyNumber !=null and params.supplyNumber.trim() != ''">
+            and supply_number like concat(concat('%',#{params.supplyNumber}),'%')
+        </if>
+    </select>
+    <select id="findByName" resultType="com.demo.supply.entity.Supply">
+        select distinct supply_name from supply where 1 = 1
+        <if test="params.supplyName !=null and params.supplyName.trim() != ''">
+            and supply_name like concat(concat('%',#{params.supplyName}),'%')
+        </if>
+    </select>
+
+</mapper>
